@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^4.24.0",
+    "typescript": "^5.6.3"
+  }
 }
