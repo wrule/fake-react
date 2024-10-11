@@ -1,5 +1,5 @@
 import { REACT_ELEMENT_TYPE } from 'shared/ReactSymbols';
-import type { Type, Key, Ref, Props, ReactElement } from 'shared/ReactTypes';
+import type { Type, Key, Ref, Props, ReactElement, ElementType } from 'shared/ReactTypes';
 
 // ReactElement
 
@@ -16,3 +16,42 @@ const ReactElement = function(
   };
   return element;
 }
+
+export const jsx = (
+  type: ElementType,
+  config: any,
+  ...maybeChildren: any[]
+) => {
+  let key: Key = null;
+  const props: Props = { };
+  let ref: Ref = null;
+
+  for (const prop in config) {
+    const val = config[prop];
+    if (prop === 'key') {
+      if (val !== undefined) {
+        key = '' + config[prop];
+      }
+      continue;
+    }
+    if (prop === 'ref') {
+      if (val !== undefined) {
+        ref = val;
+      }
+      continue;
+    }
+    if (Object.hasOwnProperty.call(config, prop)) {
+      props[prop] = val;
+    }
+  }
+
+  if (maybeChildren.length === 1) {
+    props.children = maybeChildren[0];
+  } else if (maybeChildren.length > 1) {
+    props.children = maybeChildren;
+  }
+
+  return ReactElement(type, key, ref, props);
+};
+
+export const jsxDEV = jsx;
