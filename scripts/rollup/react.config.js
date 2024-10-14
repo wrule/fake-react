@@ -1,5 +1,7 @@
 import path from 'path';
 import { getPackageJSON, resolvePkgPath } from './utils';
+import ts from 'rollup-plugin-typescript2';
+import cjs from '@rollup/plugin-commonjs';
 
 const { name, module } = getPackageJSON('react');
 const pkgPath = resolvePkgPath(name);
@@ -13,5 +15,26 @@ export default [
       name: 'index.js',
       format: 'umd',
     },
+    plugins: getBaseRollupPlugins(),
+  },
+  {
+    input: path.join(pkgPath, 'src/jsx.ts'),
+    output: [
+      {
+        file: path.join(pkgDistPath, 'jsx-runtime.js'),
+        name: 'jsx.runtime.js',
+        format: 'umd',
+      },
+      {
+        file: path.join(pkgDistPath, 'jsx-dev.runtime.js'),
+        name: 'jsx-dev.runtime.js',
+        format: 'umd',
+      },
+    ],
+    plugins: getBaseRollupPlugins(),
   },
 ];
+
+function getBaseRollupPlugins({ typescript = { } } = { }) {
+  return [cjs(), ts(typescript)];
+}
