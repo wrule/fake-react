@@ -2,6 +2,7 @@ import path from 'path';
 import { getPackageJSON, resolvePkgPath } from './utils';
 import ts from 'rollup-plugin-typescript2';
 import cjs from '@rollup/plugin-commonjs';
+import generatePackageJSON from 'rollup-plugin-generate-package-json';
 
 const { name, module } = getPackageJSON('react');
 const pkgPath = resolvePkgPath(name);
@@ -15,7 +16,13 @@ export default [
       name: 'index.js',
       format: 'umd',
     },
-    plugins: getBaseRollupPlugins(),
+    plugins: [...getBaseRollupPlugins(), generatePackageJSON({
+      inputFolder: pkgPath,
+      outputFolder: pkgDistPath,
+      baseContents: ({ name, description, version }) => ({
+        name, description, version, main: 'index.js',
+      }),
+    })],
   },
   {
     input: path.join(pkgPath, 'src/jsx.ts'),
