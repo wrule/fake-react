@@ -33,8 +33,8 @@ export default [
         format: 'umd',
       },
       {
-        file: path.join(pkgDistPath, 'jsx-dev.runtime.js'),
-        name: 'jsx-dev.runtime.js',
+        file: path.join(pkgDistPath, 'jsx-dev-runtime.js'),
+        name: 'jsx-dev-runtime.js',
         format: 'umd',
       },
     ],
