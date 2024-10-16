@@ -1,8 +1,6 @@
 import path from 'path';
-import { getPackageJSON, resolvePkgPath } from './utils';
-import ts from 'rollup-plugin-typescript2';
-import cjs from '@rollup/plugin-commonjs';
 import generatePackageJSON from 'rollup-plugin-generate-package-json';
+import { getPackageJSON, resolvePkgPath, getBaseRollupPlugins } from './utils';
 
 const { name, module } = getPackageJSON('react');
 const pkgPath = resolvePkgPath(name);
@@ -29,7 +27,7 @@ export default [
     output: [
       {
         file: path.join(pkgDistPath, 'jsx-runtime.js'),
-        name: 'jsx.runtime.js',
+        name: 'jsx-runtime.js',
         format: 'umd',
       },
       {
@@ -41,7 +39,3 @@ export default [
     plugins: getBaseRollupPlugins(),
   },
 ];
-
-function getBaseRollupPlugins({ typescript = { } } = { }) {
-  return [cjs(), ts(typescript)];
-}
